@@ -44,6 +44,22 @@ async function run() {
             res.send(result);
         })
 
+        app.put('/users/:id',async (req,res)=>{
+            
+            const id=req.params.id
+            const query={_id: new ObjectId(id)}
+            const user=req.body;
+            const updatedDoc={
+                $set:{
+                    name:user.name,
+                    email:user.email
+                }
+            }
+            const options={upsert:true};
+            const result=await usersCollection.updateOne(query,updatedDoc,options);
+            res.send(result);
+        })
+
         app.delete('/users/:id',async (req,res)=>{
             console.log(req.params);
             const id=req.params.id
